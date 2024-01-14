@@ -1,11 +1,14 @@
 const expressFunction = require("express");
-app = expressFunction();
+const dotenv = require("dotenv");
+const app = expressFunction();
+const appPort = process.env.APP_PORT || 3000;
+dotenv.config({ path: `.env` });
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "POST,PUT,PATCH,DELETE,OPTIONS"
+    "POST,GET,PUT,PATCH,DELETE,OPTIONS"
   );
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -19,6 +22,6 @@ app.use("/todo", require("./api/todo-list"));
 app.use("/signup", require("./api/signup"));
 app.use("/signin", require("./api/signin"));
 
-app.listen(3000, function () {
-  console.log("Listening on port 3000");
+app.listen(appPort, function () {
+  console.log(`Listening on port ${appPort}`);
 });

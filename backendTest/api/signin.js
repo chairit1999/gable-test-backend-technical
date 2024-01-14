@@ -2,10 +2,8 @@ const expressFunction = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const router = expressFunction.Router();
-const Storage = require("node-storage");
-const store = new Storage("./storage/user");
-
-const key = "MY_KEY";
+const { userStorage } = require("../storage/storage");
+const key = process.env.SECRET_KEY || "MY_KEY";
 
 const compareHash = async (plaintext, hashText) => {
   return new Promise((resolve, reject) => {
@@ -21,9 +19,9 @@ const compareHash = async (plaintext, hashText) => {
 
 router.route("").post(async (req, res) => {
   try {
-    const user = (await store.get("user"))?.find(
-      (item) => item.email == req.body.email
-    );
+    const users = await userStorage.get("user");
+
+    const user = users?.find((item) => item.email == req.body.email);
 
     if (!user) {
       return res.status(400).json({ message: "email or password is wrong" });
@@ -44,4 +42,5 @@ router.route("").post(async (req, res) => {
     return res.status(404).send(error);
   }
 });
+
 module.exports = router;

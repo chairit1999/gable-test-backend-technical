@@ -2,8 +2,7 @@ const expressFunction = require("express");
 const router = expressFunction.Router();
 const bcrypt = require("bcryptjs");
 const { v4 } = require("uuid");
-const Storage = require("node-storage");
-const store = new Storage("./storage/user");
+const { userStorage } = require("../storage/storage");
 
 const makeHash = async (plainText) => {
   const result = await bcrypt.hash(plainText, 10);
@@ -12,7 +11,7 @@ const makeHash = async (plainText) => {
 
 router.route("").post(async (req, res) => {
   const hashPassword = await makeHash(req.body.password);
-  const user = await store.get("user");
+  const user = await userStorage.get("user");
 
   const isDuplicateEmail = user?.find((item) => item.email === req.body.email);
 
@@ -20,7 +19,7 @@ router.route("").post(async (req, res) => {
     return res.status(400).send({ message: "duplicate an email" });
   }
 
-  store.put("user", [
+  userStorage.put("user", [
     ...(user || []),
     {
       id: v4(),
