@@ -1,4 +1,4 @@
-var expressFunction = require("express");
+const expressFunction = require("express");
 const router = expressFunction.Router();
 
 router.route("").post((req, res) => {

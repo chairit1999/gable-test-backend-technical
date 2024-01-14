@@ -16,6 +16,8 @@ app.use((req, res, next) => {
 
 app.use(expressFunction.json({ limit: "100mb" }));
 app.use("/todo", require("./api/todo-list"));
+app.use("/signup", require("./api/signup"));
+app.use("/signin", require("./api/signin"));
 
 app.listen(3000, function () {
   console.log("Listening on port 3000");
