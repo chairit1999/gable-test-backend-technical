@@ -3,13 +3,14 @@ const router = expressFunction.Router();
 const bcrypt = require("bcryptjs");
 const { v4 } = require("uuid");
 const { userStorage } = require("../storage/storage");
+const { validateSignup } = require("../middleware/validation");
 
 const makeHash = async (plainText) => {
   const result = await bcrypt.hash(plainText, 10);
   return result;
 };
 
-router.route("").post(async (req, res) => {
+router.route("").post(validateSignup, async (req, res) => {
   const hashPassword = await makeHash(req.body.password);
   const user = await userStorage.get("user");
 

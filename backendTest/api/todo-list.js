@@ -3,8 +3,9 @@ const authorization = require("../middleware/authorize");
 const router = expressFunction.Router();
 const { v4 } = require("uuid");
 const { todoStorage } = require("../storage/storage");
+const { validateTodo } = require("../middleware/validation");
 
-router.route("").post(authorization, async (req, res) => {
+router.route("").post(authorization, validateTodo, async (req, res) => {
   const userId = req.headers.user.id;
   const { title, date } = req.body;
   const todo = await todoStorage.get("todo");
@@ -40,7 +41,7 @@ router.route("/:id").get(authorization, async (req, res) => {
   res.status(200).send(findTodoById);
 });
 
-router.route("/:id").patch(authorization, async (req, res) => {
+router.route("/:id").patch(authorization, validateTodo, async (req, res) => {
   const userId = req.headers.user.id;
   const id = req.params.id;
   const { title, date } = req.body;
