@@ -1,8 +1,8 @@
 const expressFunction = require("express");
 const dotenv = require("dotenv");
 const app = expressFunction();
-const appPort = process.env.APP_PORT || 3000;
 dotenv.config({ path: `.env` });
+const appPort = process.env.APP_PORT || 3000;
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
