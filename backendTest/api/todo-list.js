@@ -28,7 +28,7 @@ router.route("").get(authorization, async (req, res) => {
   const todo = await todoStorage.get("todo");
 
   const findTodoByUser = todo?.filter((item) => item.userId == userId);
-  return res.status(200).send(findTodoByUser);
+  return res.status(200).send(findTodoByUser || []);
 });
 
 router.route("/:id").get(authorization, async (req, res) => {
